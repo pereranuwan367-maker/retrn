@@ -1,81 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width,
-             initial-scale=1.0,
-             maximum-scale=1.0,
-             user-scalable=no"
-  >
-
-  <title>Cloud Online Shop</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-
-      touch-action: manipulation;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      background: #ffffff;
-    }
-
-    #appFrame {
-      display: block;
-      width: 100%;
-      height: 100dvh;
-
-      min-width: 100%;
-      min-height: 100%;
-
-      border: 0;
-      outline: 0;
-
-      pointer-events: auto;
-
-      touch-action: manipulation;
-
-      background: #ffffff;
-    }
-
-    /* Important for mobile browsers */
-    iframe {
-      pointer-events: auto !important;
-      touch-action: manipulation !important;
-    }
-
-    @supports not (height: 100dvh) {
-      #appFrame {
-        height: 100vh;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5,user-scalable=yes,viewport-fit=cover">
+<title>Cloud Online Shop</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:100%;min-height:100%;overflow-x:hidden;background:#f5f7fb}
+  body{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+  .app-frame{
+    display:block;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    height:100vh;
+    height:100dvh;
+    min-height:560px;
+    border:0;
+    margin:0;
+    padding:0;
+    background:#fff;
+    touch-action:manipulation;
+  }
+</style>
 </head>
-
 <body>
+<!-- Replace the URL below with your Google Apps Script Web App URL. -->
+<iframe
+  id="appFrame"
+  class="app-frame"
+  src="https://script.google.com/macros/s/AKfycbze1kR5LMYeI6JPkAjiTHPxrSfmvADw4aGdo8XLszQFmAFtJHTpaMN1lz7GyXmByM3ACg/exec?page=index"
+  title="Cloud Online Shop Returns / Refunds"
+  loading="eager"
+  allow="camera; microphone; autoplay; fullscreen"
+  scrolling="yes"
+  frameborder="0">
+</iframe>
 
-  <iframe
-    id="appFrame"
-    src="https://script.google.com/macros/s/AKfycbze1kR5LMYeI6JPkAjiTHPxrSfmvADw4aGdo8XLszQFmAFtJHTpaMN1lz7GyXmByM3ACg/exec?page=index"
-    title="Cloud Online Shop"
-    allow="fullscreen"
-    scrolling="yes">
-  </iframe>
+<script>
+(function(){
+  const iframe=document.getElementById('appFrame');
 
+  // Keep the iframe touch-enabled on phones, including "Desktop site".
+  iframe.style.pointerEvents='auto';
+
+  // Re-apply the sizing after orientation changes.
+  function resizeFrame(){
+    iframe.style.width='100%';
+    iframe.style.maxWidth='100%';
+    iframe.style.height=(window.visualViewport ? window.visualViewport.height : window.innerHeight)+'px';
+  }
+
+  window.addEventListener('resize', resizeFrame, {passive:true});
+  window.addEventListener('orientationchange', function(){
+    setTimeout(resizeFrame,150);
+  }, {passive:true});
+
+  resizeFrame();
+})();
+</script>
 </body>
 </html>
