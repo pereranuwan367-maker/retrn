@@ -1,96 +1,63 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Cloud Online Shop - Admin Review</title>
-  <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f5f7fb;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-    #adminFrame{display:block;width:100%;height:100%;border:0;background:#f5f7fb}
-    #loading{
-      position:fixed;inset:0;display:grid;place-items:center;
-      background:linear-gradient(135deg,#f8fafc,#eef2ff);z-index:10;
-      padding:24px
-    }
-    .card{
-      width:min(420px,100%);padding:28px;border-radius:24px;
-      background:rgba(255,255,255,.95);border:1px solid #e2e8f0;
-      box-shadow:0 20px 60px rgba(15,23,42,.10);text-align:center
-    }
-    .logo{
-      width:56px;height:56px;margin:0 auto 14px;border-radius:16px;
-      display:grid;place-items:center;color:#fff;font-size:26px;font-weight:900;
-      background:linear-gradient(135deg,#111827,#2563eb,#7c3aed)
-    }
-    h1{margin:0;font-size:22px;color:#172033}
-    p{margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.5}
-    .spinner{
-      width:22px;height:22px;margin:18px auto 0;border-radius:50%;
-      border:3px solid #dbeafe;border-top-color:#2563eb;animation:spin .8s linear infinite
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .error{display:none;margin-top:16px;padding:12px;border-radius:14px;background:#fef2f2;color:#b91c1c;font-size:13px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5,user-scalable=yes,viewport-fit=cover">
+<title>Cloud Online Shop</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:100%;min-height:100%;overflow-x:hidden;background:#f5f7fb}
+  body{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+  .app-frame{
+    display:block;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    height:100vh;
+    height:100dvh;
+    min-height:560px;
+    border:0;
+    margin:0;
+    padding:0;
+    background:#fff;
+    touch-action:manipulation;
+  }
+</style>
 </head>
 <body>
-  <div id="loading">
-    <div class="card">
-      <div class="logo">☁</div>
-      <h1>Cloud Online Shop</h1>
-      <p>Loading secure admin review...</p>
-      <div class="spinner"></div>
-      <div id="error" class="error"></div>
-    </div>
-  </div>
+<!-- Replace the URL below with your Google Apps Script Web App URL. -->
+<iframe
+  id="appFrame"
+  class="app-frame"
+  src="https://script.google.com/macros/s/AKfycbze1kR5LMYeI6JPkAjiTHPxrSfmvADw4aGdo8XLszQFmAFtJHTpaMN1lz7GyXmByM3ACg/exec?page=admin"
+  title="Cloud Online Shop Returns / Refunds"
+  loading="eager"
+  allow="camera; microphone; autoplay; fullscreen"
+  scrolling="yes"
+  frameborder="0">
+</iframe>
 
-  <iframe
-    id="adminFrame"
-    title="Cloud Online Shop Admin Review"
-    allow="autoplay; fullscreen"
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
+<script>
+(function(){
+  const iframe=document.getElementById('appFrame');
 
-  <script>
-    /*
-      GitHub Pages admin wrapper.
-      IMPORTANT:
-      Replace this with your deployed Google Apps Script Web App URL.
-      Example:
-      https://script.google.com/macros/s/XXXXXXXXXXXX/exec?page=admin
-    */
-    const APPS_SCRIPT_ADMIN_URL =
-      'https://script.google.com/macros/s/AKfycbze1kR5LMYeI6JPkAjiTHPxrSfmvADw4aGdo8XLszQFmAFtJHTpaMN1lz7GyXmByM3ACg/exec?page=admin';
+  // Keep the iframe touch-enabled on phones, including "Desktop site".
+  iframe.style.pointerEvents='auto';
 
-    const frame = document.getElementById('adminFrame');
-    const loading = document.getElementById('loading');
-    const error = document.getElementById('error');
+  // Re-apply the sizing after orientation changes.
+  function resizeFrame(){
+    iframe.style.width='100%';
+    iframe.style.maxWidth='100%';
+    iframe.style.height=(window.visualViewport ? window.visualViewport.height : window.innerHeight)+'px';
+  }
 
-    function showError(message){
-      error.textContent = message;
-      error.style.display = 'block';
-      const spinner = document.querySelector('.spinner');
-      if(spinner) spinner.style.display = 'none';
-    }
+  window.addEventListener('resize', resizeFrame, {passive:true});
+  window.addEventListener('orientationchange', function(){
+    setTimeout(resizeFrame,150);
+  }, {passive:true});
 
-    function validBackendUrl(url){
-      try{
-        const u = new URL(url);
-        return u.protocol === 'https:' && /(^|\\.)googleusercontent\\.com$|(^|\\.)script\.google\.com$/.test(u.hostname);
-      }catch(e){
-        return false;
-      }
-    }
-
-    if(!validBackendUrl(APPS_SCRIPT_ADMIN_URL) || APPS_SCRIPT_ADMIN_URL.includes('YOUR_DEPLOYMENT_ID')){
-      showError('Set APPS_SCRIPT_ADMIN_URL to your deployed Google Apps Script Web App URL.');
-    }else{
-      frame.src = APPS_SCRIPT_ADMIN_URL;
-      frame.addEventListener('load',()=>{
-        loading.style.display = 'none';
-      },{once:true});
-    }
-  </script>
+  resizeFrame();
+})();
+</script>
 </body>
 </html>
